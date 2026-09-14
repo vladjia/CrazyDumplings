@@ -24,7 +24,7 @@ index.html 已包含：
 8. 品牌 loading cover / gs-cover.png
 
 你只要修改 index.html 這一行：
-const GAS_WEB_APP_URL = "PASTE_YOUR_GAS_WEB_APP_EXEC_URL_HERE";
+const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwERLvacFR0VtA1dFtW0Un7oOQ4SLj5PNUKevDzB-3T6KCIGr4V1P1b2fi7okycy8f1/exec";
 
 貼入 GAS 部署的 /exec 網址即可。
 
@@ -32,3 +32,10 @@ const GAS_WEB_APP_URL = "PASTE_YOUR_GAS_WEB_APP_EXEC_URL_HERE";
 index.html 搜尋：
 --gs-cover-h:40px;
 只改 40px 即可。
+
+
+已綁定 GAS：
+https://script.google.com/macros/s/AKfycbwERLvacFR0VtA1dFtW0Un7oOQ4SLj5PNUKevDzB-3T6KCIGr4V1P1b2fi7okycy8f1/exec
+
+
+ICON 修正：PWA / Apple Touch / Favicon 已統一改為官方 LOGO 左側『瘋』主標（含 Crazy＋阿橘），不再使用單獨阿橘圖示。
