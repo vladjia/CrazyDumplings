@@ -39,3 +39,12 @@ https://script.google.com/macros/s/AKfycbwERLvacFR0VtA1dFtW0Un7oOQ4SLj5PNUKevDzB
 
 
 ICON 修正：PWA / Apple Touch / Favicon 已統一改為官方 LOGO 左側『瘋』主標（含 Crazy＋阿橘），不再使用單獨阿橘圖示。
+
+AUTO UPDATE 修正：
+- Service Worker 改為 Network First。
+- HTML 導航使用 cache:no-store，優先取得最新 index.html。
+- 同源靜態資源有網路時先抓新版，離線才用快取。
+- 每次開啟 PWA 都會 registration.update() 主動檢查 sw.js。
+- 新 Worker 啟用後 controllerchange 自動 reload。
+- GAS / script.google.com 不經 Service Worker，保持直通。
+因此 GitHub 更新檔案後，使用者不需要刪除或重新安裝 PWA。

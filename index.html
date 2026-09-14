@@ -202,9 +202,21 @@
     }
 
     // PWA Service Worker
+    // 已安裝的 PWA 每次開啟都主動檢查 sw.js；
+    // 有新 Worker 時立即接管，不需要重新安裝 App。
     if("serviceWorker" in navigator){
-      window.addEventListener("load",()=>{
-        navigator.serviceWorker.register("./sw.js").catch(()=>{});
+      window.addEventListener("load", async ()=>{
+        try{
+          const reg = await navigator.serviceWorker.register("./sw.js");
+          await reg.update();
+
+          let reloading = false;
+          navigator.serviceWorker.addEventListener("controllerchange", ()=>{
+            if(reloading) return;
+            reloading = true;
+            location.reload();
+          });
+        }catch(_){}
       });
     }
   </script>
