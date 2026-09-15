@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#FF7A1A">
+  <title>Crazy瘋水餃｜專案進度</title>
+  <meta name="description" content="Crazy瘋水餃品牌數位整合專案進度">
+
+  <!-- 直接沿用主站現有 favicon / cover，不另外複製資產 -->
+  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+
+  <style>
+    :root{
+      --orange:#FF7A1A;
+      --brown:#35241E;
+      --cream:#F6E7D2;
+      /* GAS 上方 Google 列的裁切高度 */
+      --gs-cover-h:40px;
+    }
+
+    *{box-sizing:border-box}
+
+    html,body{
+      width:100%;
+      height:100%;
+      margin:0;
+      overflow:hidden;
+      background:var(--cream);
+      overscroll-behavior:none;
+      font-family:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
+    }
+
+    /* 把 GAS iframe 往上推，裁掉最上方 Google 那列 */
+    #appFrame{
+      position:fixed;
+      left:0;
+      top:calc(-1 * var(--gs-cover-h));
+      width:100%;
+      height:calc(100% + var(--gs-cover-h));
+      border:0;
+      display:block;
+      background:var(--cream);
+    }
+
+    /* iPhone safe-area 補底色 */
+    #gsCover{
+      position:fixed;
+      z-index:30;
+      top:0;left:0;right:0;
+      height:env(safe-area-inset-top,0px);
+      background:var(--cream);
+      pointer-events:none;
+    }
+
+    #loadingCover{
+      position:fixed;
+      inset:0;
+      z-index:50;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:var(--cream);
+      transition:opacity .25s ease,visibility .25s ease;
+    }
+    #loadingCover.hide{
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+    }
+    #loadingCover img{
+      width:min(86vw,520px);
+      height:auto;
+      object-fit:contain;
+      filter:drop-shadow(0 14px 34px rgba(53,36,30,.10));
+    }
+    #loadingText{
+      position:absolute;
+      bottom:calc(24px + env(safe-area-inset-bottom));
+      left:50%;
+      transform:translateX(-50%);
+      color:var(--brown);
+      font-size:12px;
+      font-weight:900;
+      white-space:nowrap;
+    }
+    #fallback{
+      position:fixed;
+      z-index:60;
+      right:12px;
+      bottom:calc(12px + env(safe-area-inset-bottom));
+      display:none;
+      text-decoration:none;
+      border-radius:999px;
+      padding:9px 13px;
+      background:rgba(53,36,30,.92);
+      color:#fff;
+      font-size:12px;
+      font-weight:900;
+    }
+  </style>
+</head>
+
+<body>
+  <iframe
+    id="appFrame"
+    title="Crazy瘋水餃｜專案進度"
+    referrerpolicy="strict-origin-when-cross-origin"
+  ></iframe>
+
+  <div id="gsCover" aria-hidden="true"></div>
+
+  <div id="loadingCover">
+    <img src="../gs-cover.png" alt="Crazy瘋水餃">
+    <div id="loadingText">專案進度載入中…</div>
+  </div>
+
+  <a id="fallback" target="_blank" rel="noopener">直接開啟</a>
+
+  <script>
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwERLvacFR0VtA1dFtW0Un7oOQ4SLj5PNUKevDzB-3T6KCIGr4V1P1b2fi7okycy8f1/exec";
+    const PAGE_KEY = "progress";
+
+    const frame = document.getElementById("appFrame");
+    const cover = document.getElementById("loadingCover");
+    const fallback = document.getElementById("fallback");
+
+    function buildGasUrl(){
+      const gas = new URL(GAS_WEB_APP_URL);
+      gas.searchParams.set("page", PAGE_KEY);
+
+      // 其他網址參數照樣傳給 GAS，但 page 固定為 progress
+      const here = new URL(location.href);
+      here.searchParams.forEach((value,key)=>{
+        if(key !== "page") gas.searchParams.set(key,value);
+      });
+
+      return gas.toString();
+    }
+
+    try{
+      const target = buildGasUrl();
+      frame.src = target;
+      fallback.href = target;
+
+      frame.addEventListener("load",()=>{
+        setTimeout(()=>cover.classList.add("hide"),120);
+      });
+
+      setTimeout(()=>{
+        if(!cover.classList.contains("hide")){
+          fallback.style.display = "block";
+        }
+      },8000);
+    }catch(err){
+      document.getElementById("loadingText").textContent = "專案進度載入失敗";
+    }
+  </script>
+</body>
+</html>
